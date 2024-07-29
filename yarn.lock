@@ -1411,6 +1411,19 @@ ignore@^5.2.0:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.3.1.tgz#5073e554cd42c5b33b394375f538b8593e34d4ef"
   integrity sha512-5Fytz/IraMjqpwfd34ke28PTVMjZjJG2MPn5t7OE4eUCUNf8BAa7b5WUS9/Qvr6mwOQS7Mk6vdsMno5he+T8Xw==
 
+imagekit-javascript@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/imagekit-javascript/-/imagekit-javascript-3.0.2.tgz#31e69b97beeda1ab3c5ed9010e71fe124039837b"
+  integrity sha512-lTlLBrb+96eDy20zz3AIZtSs4nhozoa+kRcz3Yhl/TLAvciMmKXQe2kFOWM/j8KurvG5jLeDuMI6sCp+w7y2IA==
+
+imagekitio-react@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/imagekitio-react/-/imagekitio-react-4.2.0.tgz#71028b90840a4e850156c6d49b06274cf8130c2c"
+  integrity sha512-g6aBeOPXnU7WNjCAKx82tevSKKWoKlg8xS+BITOZn+Mk2MoyDbj8jLbyP5aiMCtMWzduabgf72wPcMaeEq++lw==
+  dependencies:
+    imagekit-javascript "^3.0.2"
+    prop-types "^15.7.2"
+
 import-fresh@^3.2.1:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/import-fresh/-/import-fresh-3.3.0.tgz#37162c25fcb9ebaa2e6e53d5b4d88ce17d9e0c2b"
@@ -1711,7 +1724,7 @@ lodash.merge@^4.6.2:
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-loose-envify@^1.4.0:
+loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
@@ -1889,7 +1902,7 @@ prelude-ls@^1.2.1:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-prop-types@^15.8.1:
+prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -1908,12 +1921,13 @@ queue-microtask@^1.2.2:
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
-react-dom@19.0.0-rc-8b08e99e-20240713:
-  version "19.0.0-rc-8b08e99e-20240713"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.0.0-rc-8b08e99e-20240713.tgz#8910f3d6e5dfe2035b880b79ef9a93dd63b59d89"
-  integrity sha512-nTbNXc5LVuFh+CwsmwogdYzHumZb9LVtWr1pE3DFHjY3y2VM/bYg8d00Vn6WWqQ8js3PY1w150NEEax4CrtsTA==
+react-dom@^18.3.1:
+  version "18.3.1"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.3.1.tgz#c2265d79511b57d479b3dd3fdfa51536494c5cb4"
+  integrity sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==
   dependencies:
-    scheduler "0.25.0-rc-8b08e99e-20240713"
+    loose-envify "^1.1.0"
+    scheduler "^0.23.2"
 
 react-is@^16.13.1:
   version "16.13.1"
@@ -2050,10 +2064,12 @@ safe-regex-test@^1.0.3:
     es-errors "^1.3.0"
     is-regex "^1.1.4"
 
-scheduler@0.25.0-rc-8b08e99e-20240713:
-  version "0.25.0-rc-8b08e99e-20240713"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.25.0-rc-8b08e99e-20240713.tgz#5848c4a2ac55efb2b0d6e81faf88ac451508dade"
-  integrity sha512-vPAQ9hTVeh54O7K7nTH5rIr060XI2E5xXSLOeiDpZVjtZW9DhZMjq4L82aI8J5EZPwYlWH69SdKBwFMIleNkUQ==
+scheduler@^0.23.2:
+  version "0.23.2"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.23.2.tgz#414ba64a3b282892e944cf2108ecc078d115cdc3"
+  integrity sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==
+  dependencies:
+    loose-envify "^1.1.0"
 
 semver@^6.3.1:
   version "6.3.1"

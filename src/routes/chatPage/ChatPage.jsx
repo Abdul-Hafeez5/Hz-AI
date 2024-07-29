@@ -1,13 +1,6 @@
-import { useRef } from "react";
 import "./chatPage.css";
-import { useEffect } from "react";
 const ChatPage = () => {
-  const lastRef = useRef(null);
-
-  useEffect(() => {
-    lastRef.current.scrollIntoView({ behaviour: "smooth" });
-  }, []);
-
+ 
   return (
     <div className="chatPage">
       <div className="wrapper">
@@ -34,7 +27,7 @@ const ChatPage = () => {
           <div className="message user"> test message from user</div>
           <div className="message">Test message from AI</div>
           <div className="message user"> test message from user</div>
-          <div ref={lastRef} />
+          <div />
         </div>
       </div>
     </div>

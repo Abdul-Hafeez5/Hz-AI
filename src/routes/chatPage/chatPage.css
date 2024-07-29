@@ -3,6 +3,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  position: relative;
 
   .wrapper {
     flex: 1;
