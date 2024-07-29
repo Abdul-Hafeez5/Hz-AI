@@ -1,19 +1,39 @@
 import { Link, Outlet } from "react-router-dom";
-import "./rootlayout.css";
+import "./rootLayout.css";
+import { ClerkProvider } from "@clerk/clerk-react";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/clerk-react";
+
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Missing Publishable Key");
+}
 
 const RootLayOut = () => {
   return (
-    <div className="rootLayout">
-      <header>
-        <Link to="/">
-          <img src="/logo.png" alt="logo" />
-        </Link>
-        <span>Hz AI</span>
-      </header>
-      <main>
-        <Outlet />
-      </main>
-    </div>
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+      <div className="rootLayout">
+        <header>
+          <Link to="/" className="logo">
+            <img src="/logo.png" alt="logo" />
+            <span>Hz AI</span>
+          </Link>
+          <div className="user">
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </div>
+        </header>
+        <main>
+          <Outlet />
+        </main>
+      </div>
+    </ClerkProvider>
   );
 };
 
