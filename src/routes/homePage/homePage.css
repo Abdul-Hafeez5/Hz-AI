@@ -4,6 +4,11 @@
   gap: 100px;
   height: 100%;
 
+  @media screen and (max-width: 1024px) {
+    flex-direction: column;
+    gap: 0;
+  }
+
   .left {
     flex: 1;
     display: flex;
@@ -19,10 +24,18 @@
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
+
+      @media screen and (max-width: 1280px) {
+        font-size: 64px;
+      }
     }
     h3 {
       font-weight: 400;
-      width: 70%;
+      max-width: 70%;
+
+      @media screen and (max-width: 1024px) {
+        max-width: 100%;
+      }
     }
 
     a {
@@ -91,6 +104,13 @@
         border-color: #2c2937;
         border-radius: 10px;
 
+        @media screen and (max-width: 1024px) {
+          display: none;
+        }
+        @media screen and (max-width: 1280px) {
+          right: 0;
+        }
+
         img {
           width: 32px;
           height: 32px;
@@ -106,6 +126,7 @@
     left: 0;
     opacity: 0.05;
     animation: 100s linear infinite rotateOrbital;
+    z-index: -1;
   }
 
   .terms {
