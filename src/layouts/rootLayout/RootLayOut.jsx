@@ -1,12 +1,7 @@
 import { Link, Outlet } from "react-router-dom";
 import "./rootLayout.css";
 import { ClerkProvider } from "@clerk/clerk-react";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
+import { SignedIn, UserButton } from "@clerk/clerk-react";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
