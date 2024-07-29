@@ -80,6 +80,24 @@
         object-fit: contain;
         animation: 3s ease-in-out infinite alternate botAnimate;
       }
+      .chat {
+        position: absolute;
+        bottom: -30px;
+        right: -50px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 20px;
+        border-color: #2c2937;
+        border-radius: 10px;
+
+        img {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      }
     }
   }
   .orbital {
@@ -88,6 +106,29 @@
     left: 0;
     opacity: 0.05;
     animation: 100s linear infinite rotateOrbital;
+  }
+
+  .terms {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+
+    .links {
+      display: flex;
+      gap: 10px;
+      font-size: 10px;
+      color: #888;
+    }
   }
 }
 @keyframes rotateOrbital {
