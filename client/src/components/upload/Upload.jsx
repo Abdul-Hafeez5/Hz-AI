@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { IKContext, IKImage, IKUpload } from "imagekitio-react";
+import  { useRef } from "react";
+import { IKContext, IKUpload } from "imagekitio-react";
 
 const urlEndpoint = import.meta.env.VITE_IMAGE_KIT_ENDPOINT;
 const publicKey = import.meta.env.VITE_IMAGE_KIT_PUBLIC_KEY;
@@ -38,8 +38,21 @@ const Upload = ({ setImg }) => {
   };
 
   const onUploadStart = (evt) => {
-    console.log("Start", evt);
-    setImg((prev) => ({ ...prev, isLoading: true }));
+    const file = evt.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImg((prev) => ({
+        ...prev,
+        isLoading: true,
+        aiData: {
+          inlinedata: {
+            data: reader.result.split(",")[1],
+            mimeType: file.type,
+          },
+        },
+      }));
+    };
+    reader.readAsDataURL(file);
   };
   return (
     <div>
