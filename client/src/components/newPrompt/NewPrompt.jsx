@@ -6,6 +6,7 @@ import model from "../../lib/gemini";
 import Markdown from "react-markdown";
 
 const NewPrompt = () => {
+  const lastRef = useRef(null);
   const [question, setQuestion] = useState("");
   const [answers, setAnswers] = useState("");
   const [image, setImage] = useState({
@@ -14,7 +15,6 @@ const NewPrompt = () => {
     dbData: {},
     aiData: {},
   });
-  const lastRef = useRef(null);
 
   useEffect(() => {
     lastRef.current.scrollIntoView({ behaviour: "smooth" });
@@ -22,11 +22,17 @@ const NewPrompt = () => {
 
   const runAI = async (text) => {
     setQuestion(text);
-    const result = await model.generateContent(
+    const result = await chat.sendMessageStream(
       Object.entries(image.aiData).length ? [image.aiData, text] : [text]
     );
-    const response = await result.response;
-    setAnswers(response.text());
+    let accumulatedText = "";
+    for await (const chunk of result.stream) {
+      const chunkText = chunk.text();
+      console.log(chunkText);
+      accumulatedText += chunkText;
+      setAnswers(accumulatedText);
+    }
+
     setImage({ isLoading: false, error: "", dbData: {}, aiData: {} });
   };
 
@@ -36,6 +42,22 @@ const NewPrompt = () => {
     if (!querry) return;
     runAI(querry);
   };
+
+  const chat = model.startChat({
+    history: [
+      {
+        role: "user",
+        parts: [{ text: "Hello, I have 2 dogs in my house." }],
+      },
+      {
+        role: "model",
+        parts: [{ text: "Great to meet you. What would you like to know?" }],
+      },
+    ],
+    generationConfig: {
+      // maxOutputTokens: 100,
+    },
+  });
 
   return (
     <>
