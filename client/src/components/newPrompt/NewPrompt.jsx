@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react";
+import { useMutation, QueryClient } from "@tanstack/react-query";
 import "./newPrompt.css";
 import Upload from "../upload/Upload";
 import { IKImage } from "imagekitio-react";
 import model from "../../lib/gemini";
 import Markdown from "react-markdown";
+import { useNavigate } from "react-router-dom";
 
-const NewPrompt = () => {
+const NewPrompt = ({ data }) => {
+  const navigate = useNavigate();
   const lastRef = useRef(null);
   const [question, setQuestion] = useState("");
   const [answers, setAnswers] = useState("");
@@ -19,6 +22,29 @@ const NewPrompt = () => {
   useEffect(() => {
     lastRef.current.scrollIntoView({ behaviour: "smooth" });
   }, [question, answers, image.dbData]);
+
+  const queryClient = new QueryClient();
+  const mutation = useMutation({
+    mutationFn: (text) => {
+      return fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          question: question.length ? question : undefined,
+          answers,
+          img: image.dbData?.filePath || undefined,
+        }),
+      }).then((res) => res.json());
+    },
+    onSuccess: (id) => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ["userChats"] });
+      navigate(`/dashboard/chats/${id}`);
+    },
+  });
 
   const runAI = async (text) => {
     setQuestion(text);

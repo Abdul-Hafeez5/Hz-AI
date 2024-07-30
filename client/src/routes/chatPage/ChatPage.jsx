@@ -3,6 +3,7 @@ import "./chatPage.css";
 import { useLocation } from "react-router-dom";
 import { Markdown } from "react-markdown";
 import { IKImage } from "imagekitio-react";
+import NewPrompt from "../../components/newPrompt/NewPrompt";
 
 const ChatPage = () => {
   const path = useLocation().pathname;
@@ -45,6 +46,7 @@ const ChatPage = () => {
                   </div>
                 </>
               ))}
+          <NewPrompt data={data} />
         </div>
       </div>
     </div>
