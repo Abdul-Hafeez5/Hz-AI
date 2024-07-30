@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import "./newPrompt.css";
+import Upload from "../upload/Upload";
 const NewPrompt = () => {
     const lastRef = useRef(null);
 
@@ -11,9 +12,7 @@ const NewPrompt = () => {
     <>
     <div className="endChat" ref={lastRef}></div>
       <form className="newForm">
-        <label htmlFor="file">
-          <img src=".attachment.png" alt="" />
-        </label>
+       <Upload/>
         <input type="file" multiple={false} id="file" hidden />
         <input type="text" placeholder="Ask anything..." />
         <button>
