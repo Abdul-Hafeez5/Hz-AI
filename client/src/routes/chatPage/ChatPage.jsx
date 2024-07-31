@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import "./chatPage.css";
 import { useLocation } from "react-router-dom";
-import { Markdown } from "react-markdown";
+import  Markdown  from "react-markdown";
 import { IKImage } from "imagekitio-react";
 import NewPrompt from "../../components/newPrompt/NewPrompt";
 
@@ -46,7 +46,7 @@ const ChatPage = () => {
                   </div>
                 </>
               ))}
-          {data && <NewPrompt data={data} />  }
+          {data &&  <NewPrompt data={data} />  }
         </div>
       </div>
     </div>

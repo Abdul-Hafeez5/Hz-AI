@@ -1,8 +1,9 @@
-import  { useRef } from "react";
+import { useRef } from "react";
 import { IKContext, IKUpload } from "imagekitio-react";
 
 const urlEndpoint = import.meta.env.VITE_IMAGE_KIT_ENDPOINT;
 const publicKey = import.meta.env.VITE_IMAGE_KIT_PUBLIC_KEY;
+
 const authenticator = async () => {
   try {
     const response = await fetch("http://localhost:3000/api/upload");
@@ -39,6 +40,7 @@ const Upload = ({ setImg }) => {
 
   const onUploadStart = (evt) => {
     const file = evt.target.files[0];
+
     const reader = new FileReader();
     reader.onloadend = () => {
       setImg((prev) => ({
@@ -73,7 +75,7 @@ const Upload = ({ setImg }) => {
         />
         {
           <label onClick={() => ikUploadRef.current.click()}>
-            <img src="/attachment.pn" alt="" />
+            <img src="/attachment.png" alt="" />
           </label>
         }
       </IKContext>

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "./chatList.css";
 import { useQuery } from "@tanstack/react-query";
+
 const ChatList = () => {
   const { isPending, error, data } = useQuery({
     queryKey: ["userChats"],
@@ -12,7 +13,7 @@ const ChatList = () => {
 
   return (
     <div className="chatList">
-      <span className="title">Dashboard</span>
+      <span className="title">DASHBOARD</span>
       <Link to="/dashboard">Create a new Chat </Link>
       <Link to="/">Explore Hz AI </Link>
       <Link to="/">Contact </Link>

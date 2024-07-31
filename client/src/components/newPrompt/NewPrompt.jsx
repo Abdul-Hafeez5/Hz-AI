@@ -7,22 +7,35 @@ import model from "../../lib/gemini";
 import Markdown from "react-markdown";
 
 const NewPrompt = ({ data }) => {
-  const lastRef = useRef(null);
-  const formRef = useRef(null);
   const [question, setQuestion] = useState("");
   const [answers, setAnswers] = useState("");
-  const [image, setImage] = useState({
+  const [img, setImg] = useState({
     isLoading: false,
     error: "",
     dbData: {},
     aiData: {},
   });
+  const chat = model.startChat({
+    history: [
+      data?.history.map(({ role, parts }) => ({
+        role,
+        parts: [{ text: parts[0].text }],
+      })),
+    ],
+    generationConfig: {
+      // maxOutputTokens: 100,
+    },
+  });
+
+  const lastRef = useRef(null);
+  const formRef = useRef(null);
 
   useEffect(() => {
     lastRef.current.scrollIntoView({ behaviour: "smooth" });
-  }, [data, question, answers, image.dbData]);
+  }, [data, question, answers, img.dbData]);
 
   const queryClient = new QueryClient();
+
   const mutation = useMutation({
     mutationFn: () => {
       return fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}`, {
@@ -34,7 +47,7 @@ const NewPrompt = ({ data }) => {
         body: JSON.stringify({
           question: question.length ? question : undefined,
           answers,
-          img: image.dbData?.filePath || undefined,
+          img: img.dbData?.filePath || undefined,
         }),
       }).then((res) => res.json());
     },
@@ -46,7 +59,7 @@ const NewPrompt = ({ data }) => {
           formRef.current.reset();
           setQuestion();
           setAnswers();
-          setImage({
+          setImg({
             isLoading: false,
             error: "",
             dbData: {},
@@ -63,7 +76,7 @@ const NewPrompt = ({ data }) => {
     if (!isInitial) setQuestion(text);
     try {
       const result = await chat.sendMessageStream(
-        Object.entries(image.aiData).length ? [image.aiData, text] : [text]
+        Object.entries(img.aiData).length ? [img.aiData, text] : [text]
       );
       let accumulatedText = "";
       for await (const chunk of result.stream) {
@@ -85,36 +98,24 @@ const NewPrompt = ({ data }) => {
     runAI(querry, false);
   };
 
-  const chat = model.startChat({
-    history: [
-      data?.history?.map(({ role, parts }) => ({
-        role,
-        parts: [{ text: parts[0].text }],
-      })),
-    ],
-    generationConfig: {
-      // maxOutputTokens: 100,
-    },
-  });
-
   // in production we don't need it
   const doesRun = useRef(false);
   useEffect(() => {
     if (!doesRun.current) {
-      if (data?.history?.length == 1) {
+      if (data?.history?.length === 1) {
         runAI(data.history[0].parts[0].text, true);
       }
     }
-    doesRun.current == true;
+    doesRun.current = true;
   }, []);
 
   return (
     <>
-      {image.isLoading && <div>Loading...</div>}
-      {image.dbData?.filePath && (
+      {img.isLoading && <div>Loading...</div>}
+      {img.dbData?.filePath && (
         <IKImage
           urlEndpoint={import.meta.env.VITE_IMAGE_KIT_ENDPOINT}
-          path={image.dbData?.filePath}
+          path={img.dbData?.filePath}
           width="380"
           transformation={[{ width: 380 }]}
         />
@@ -127,7 +128,7 @@ const NewPrompt = ({ data }) => {
       )}
       <div className="endChat" ref={lastRef}></div>
       <form className="newForm" onSubmit={handleSubmit} ref={formRef}>
-        <Upload setImg={setImage} />
+        <Upload setImg={setImg} />
         <input type="file" multiple={false} id="file" hidden />
         <input type="text" name="querryText" placeholder="Ask anything..." />
         <button>
