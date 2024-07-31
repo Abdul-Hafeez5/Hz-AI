@@ -5,11 +5,10 @@ import Upload from "../upload/Upload";
 import { IKImage } from "imagekitio-react";
 import model from "../../lib/gemini";
 import Markdown from "react-markdown";
-import { useNavigate } from "react-router-dom";
 
 const NewPrompt = ({ data }) => {
-  const navigate = useNavigate();
   const lastRef = useRef(null);
+  const formRef = useRef(null);
   const [question, setQuestion] = useState("");
   const [answers, setAnswers] = useState("");
   const [image, setImage] = useState({
@@ -21,11 +20,11 @@ const NewPrompt = ({ data }) => {
 
   useEffect(() => {
     lastRef.current.scrollIntoView({ behaviour: "smooth" });
-  }, [question, answers, image.dbData]);
+  }, [data, question, answers, image.dbData]);
 
   const queryClient = new QueryClient();
   const mutation = useMutation({
-    mutationFn: (text) => {
+    mutationFn: () => {
       return fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}`, {
         method: "PUT",
         credentials: "include",
@@ -39,51 +38,75 @@ const NewPrompt = ({ data }) => {
         }),
       }).then((res) => res.json());
     },
-    onSuccess: (id) => {
+    onSuccess: () => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["userChats"] });
-      navigate(`/dashboard/chats/${id}`);
+      queryClient
+        .invalidateQueries({ queryKey: ["chat", data._id] })
+        .then(() => {
+          formRef.current.reset();
+          setQuestion();
+          setAnswers();
+          setImage({
+            isLoading: false,
+            error: "",
+            dbData: {},
+            aiData: {},
+          });
+        });
+    },
+    onError: (err) => {
+      console.log(err);
     },
   });
 
-  const runAI = async (text) => {
-    setQuestion(text);
-    const result = await chat.sendMessageStream(
-      Object.entries(image.aiData).length ? [image.aiData, text] : [text]
-    );
-    let accumulatedText = "";
-    for await (const chunk of result.stream) {
-      const chunkText = chunk.text();
-      console.log(chunkText);
-      accumulatedText += chunkText;
-      setAnswers(accumulatedText);
+  const runAI = async (text, isInitial) => {
+    if (!isInitial) setQuestion(text);
+    try {
+      const result = await chat.sendMessageStream(
+        Object.entries(image.aiData).length ? [image.aiData, text] : [text]
+      );
+      let accumulatedText = "";
+      for await (const chunk of result.stream) {
+        const chunkText = chunk.text();
+        console.log(chunkText);
+        accumulatedText += chunkText;
+        setAnswers(accumulatedText);
+      }
+      mutation.mutate();
+    } catch (error) {
+      console.log(error);
     }
-
-    setImage({ isLoading: false, error: "", dbData: {}, aiData: {} });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const querry = e.target.querryText.value;
     if (!querry) return;
-    runAI(querry);
+    runAI(querry, false);
   };
 
   const chat = model.startChat({
     history: [
-      {
-        role: "user",
-        parts: [{ text: "Hello, I have 2 dogs in my house." }],
-      },
-      {
-        role: "model",
-        parts: [{ text: "Great to meet you. What would you like to know?" }],
-      },
+      data?.history?.map(({ role, parts }) => ({
+        role,
+        parts: [{ text: parts[0].text }],
+      })),
     ],
     generationConfig: {
       // maxOutputTokens: 100,
     },
   });
+
+  // in production we don't need it
+  const doesRun = useRef(false);
+  useEffect(() => {
+    if (!doesRun.current) {
+      if (data?.history?.length == 1) {
+        runAI(data.history[0].parts[0].text, true);
+      }
+    }
+    doesRun.current == true;
+  }, []);
 
   return (
     <>
@@ -103,7 +126,7 @@ const NewPrompt = ({ data }) => {
         </div>
       )}
       <div className="endChat" ref={lastRef}></div>
-      <form className="newForm" onSubmit={handleSubmit}>
+      <form className="newForm" onSubmit={handleSubmit} ref={formRef}>
         <Upload setImg={setImage} />
         <input type="file" multiple={false} id="file" hidden />
         <input type="text" name="querryText" placeholder="Ask anything..." />
