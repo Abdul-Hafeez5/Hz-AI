@@ -5,6 +5,7 @@ import { useState } from "react";
 
 const HomePage = () => {
   const [typingStatus, setTypingStatus] = useState("Human1");
+
   return (
     <div className="homePage">
       <img src="/orbital.png" alt="image" className="orbital" />
@@ -69,9 +70,9 @@ const HomePage = () => {
       <div className="terms">
         <img src="/logo.png" alt="" />
         <div className="links">
-          <Link to={"/"}> Terms of service</Link>
+          <Link to="/"> Terms of service</Link>
           <span>|</span>
-          <Link to={"/"}> Privacy Policy</Link>
+          <Link to="/"> Privacy Policy</Link>
         </div>
       </div>
     </div>

@@ -43,10 +43,6 @@ app.get("/api/upload", (req, res) => {
   res.send(result);
 });
 
-// app.get("/api/test", ClerkExpressRequireAuth(), (req, res) => {
-//   const userId = req.auth.userId;
-//   res.send("success");
-// });
 
 app.post("/api/chats", ClerkExpressRequireAuth(), async (req, res) => {
   const { text } = req.body;

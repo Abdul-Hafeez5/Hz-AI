@@ -23,7 +23,7 @@
         width: 64px;
         height: 64px;
       }
-      
+
       h1 {
         font-size: 64px;
         background: linear-gradient(to right, #217bfe, #e55571);
@@ -81,22 +81,22 @@
         border: none;
         outline: none;
         color: #ececec;
+      }
 
-        button {
-          background-color: #605e68;
-          border-radius: 50%;
-          border: none;
-          cursor: pointer;
-          padding: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-right: 20px;
+      button {
+        background-color: #605e68;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
 
-          img {
-            width: 16px;
-            height: 16px;
-          }
+        img {
+          width: 16px;
+          height: 16px;
         }
       }
     }

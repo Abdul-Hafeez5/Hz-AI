@@ -4,7 +4,9 @@ import { useMutation, QueryClient } from "@tanstack/react-query";
 
 const DashboardPage = () => {
   const queryClient = new QueryClient();
+
   const navigate = useNavigate();
+
   const mutation = useMutation({
     mutationFn: (text) => {
       return fetch(`${import.meta.env.VITE_API_URL}/api/chats`, {
@@ -14,7 +16,7 @@ const DashboardPage = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ text }),
-      }).then((res)=>res.json())
+      }).then((res) => res.json());
     },
     onSuccess: (id) => {
       // Invalidate and refetch
@@ -28,6 +30,7 @@ const DashboardPage = () => {
     const text = e.target.text.value;
 
     if (!text) return;
+
     mutation.mutate(text);
   };
 

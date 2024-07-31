@@ -1,5 +1,8 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
+import {
+  GoogleGenerativeAI,
+  HarmBlockThreshold,
+  HarmCategory,
+} from "@google/generative-ai";
 
 const safetySetting = [
   {

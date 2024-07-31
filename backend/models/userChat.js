@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { Schema, model, models } from "mongoose";
+// import { Schema, model, models } from "mongoose";
 
-const userChatsSchema = new Schema(
+const userChatsSchema = new mongoose.Schema(
   {
     userId: {
       type: String,
@@ -27,4 +27,5 @@ const userChatsSchema = new Schema(
   { timestamps: true }
 );
 
-export default models.userChats || model("userChats", userChatsSchema);
+export default mongoose.models.userChats ||
+  mongoose.model("userChats", userChatsSchema);
