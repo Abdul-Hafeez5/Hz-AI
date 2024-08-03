@@ -25,6 +25,7 @@ const authenticator = async () => {
 
 const Upload = ({ setImg }) => {
   const ikUploadRef = useRef(null);
+  
   const onError = (err) => {
     console.log("Error", err);
   };

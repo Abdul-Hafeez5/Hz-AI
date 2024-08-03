@@ -114,7 +114,7 @@ const NewPrompt = ({ data }) => {
   }, []);
 
   return (
-    <>
+    <div>
       {img.isLoading && <div>Loading...</div>}
       {img.dbData?.filePath && (
         <IKImage
@@ -155,7 +155,7 @@ const NewPrompt = ({ data }) => {
           <img src="/arrow.png" alt="" className="w-4 h-4" />
         </button>
       </form>
-    </>
+    </div>
   );
 };
 
