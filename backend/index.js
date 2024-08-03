@@ -102,6 +102,7 @@ app.get("/api/userchats", ClerkExpressRequireAuth(), async (req, res) => {
     res.status(500).send("Error fetching user chats");
   }
 });
+
 app.get("/api/chats/:id", ClerkExpressRequireAuth(), async (req, res) => {
   const userId = req.auth.userId;
   try {
@@ -146,11 +147,11 @@ app.use((err, req, res, next) => {
   res.status(401).send("Unauthenticated!");
 });
 
-app.use(express.static(path.join(__dirname, "../client")));
+// app.use(express.static(path.join(__dirname, "../client")));
 
-app.get("*", (req, res) => {
-  res.sendFile(__dirname, "../client", index.html);
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(__dirname, "../client", index.html);
+// });
 
 app.listen(port, () => {
   connectToDb();

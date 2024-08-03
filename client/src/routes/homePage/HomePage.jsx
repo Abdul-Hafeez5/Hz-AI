@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 import "./homePage.css";
 import { TypeAnimation } from "react-type-animation";
 import { useState } from "react";
+import useIsOnline from "../../hooks/useIsOnline";
 
 const HomePage = () => {
   const [typingStatus, setTypingStatus] = useState("Human1");
-
+  const isOnline = useIsOnline();
+  if (!isOnline) return "It seems you are offline please try again later";
   return (
     <div className="homePage">
       <img src="/orbital.png" alt="image" className="orbital" />
