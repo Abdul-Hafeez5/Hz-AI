@@ -12,22 +12,22 @@ const ChatPage = () => {
   const { isPending, error, data } = useQuery({
     queryKey: ["chat", chatId],
     queryFn: () =>
-      fetch(`${import.meta.env.VITE_API_URL}/api/chats${chatId}`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/chats/${chatId}`, {
         credentials: "include",
       }).then((res) => res.json()),
   });
   console.log(data);
-  
+
   return (
-    <div className="chatPage">
-      <div className="wrapper">
-        <div className="chat">
+    <div className="chatPage h-full flex items-center flex-col relative">
+      <div className="wrapper flex-1 overflow-auto w-full flex justify-center">
+        <div className="chat w-1/2 flex flex-col gap-5">
           {isPending
             ? "Loading..."
             : error
             ? "something went wrong"
-            : data?.history?.map((message, index) => (
-                <>
+            : data?.history?.map((message) => (
+                <div key={message._id}>
                   {message.img && (
                     <IKImage
                       urlEndpoint={import.meta.env.VITE_IMAGE_KIT_ENDPOINT}
@@ -41,13 +41,16 @@ const ChatPage = () => {
                   )}
                   <div
                     className={
+                      // message.role ===
+                      // "bg-[#2c2937] rounded-3xl max-w-[80%] self-end"
+                      //   ? " p-5 bg-[#2c2937] rounded-3xl max-w-[80%] self-end"
+                      //   : "p-5"
                       message.role === "user" ? "message user" : "message"
                     }
-                    key={index}
                   >
                     <Markdown>{message.parts[0].text}</Markdown>
                   </div>
-                </>
+                </div>
               ))}
           {data && <NewPrompt data={data} />}
         </div>

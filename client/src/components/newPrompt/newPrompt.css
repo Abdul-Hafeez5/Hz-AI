@@ -22,8 +22,8 @@
     color: #ececec;
   }
 
-  button,
-  label {
+  label,
+  button {
     border-radius: 50%;
     background-color: #605e68;
     border: none;

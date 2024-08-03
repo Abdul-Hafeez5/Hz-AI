@@ -12,30 +12,36 @@ const ChatList = () => {
   });
 
   return (
-    <div className="chatList">
-      <span className="title">DASHBOARD</span>
+    <div className="flex  flex-col h-full ">
+      <span className=" font-semibold text-[10px] mb-3">DASHBOARD</span>
       <Link to="/dashboard">Create a new Chat </Link>
       <Link to="/">Explore Hz AI </Link>
       <Link to="/">Contact </Link>
-      <hr />
-      <span className="title">RECENT CHATS </span>
-      <div className="list">
+      <hr className="border-none h-1 bg-primary-extra-light opacity-10 rounded-md my-5" />
+      <span className=" font-semibold text-[10px] mb-3">RECENT CHATS</span>
+      <div className=" flex flex-col overflow-auto">
         {isPending
           ? "Loading..."
           : error
           ? "something went wrong"
-          : data?.map((chat) => {
-              <Link to={`/dashboards/chats/${chat._id}`} key={chat._id}>
+          : data?.map((chat) => (
+              <Link
+                to={`/dashboard/chats/${chat._id}`}
+                key={chat._id}
+                className="p-3 rounded-xl hover:bg-primary-dark"
+              >
                 {chat.title}
-              </Link>;
-            })}
+              </Link>
+            ))}
       </div>
-      <hr />
-      <div className="upgrade">
-        <img src="/logo.png" alt="" />
-        <div className="texts">
-          <span>Upgrade to Hz AI Pro</span>
-          <span>Get unlimited access to all features</span>
+      <hr className="border-none h-1 bg-primary-extra-light opacity-10 rounded-md my-5" />
+      <div className=" mt-auto flex items-center gap-3 text-[12px]">
+        <img src="/logo.png" alt="" className="w-6 h-6" />
+        <div className=" flex flex-col ">
+          <span className="font-semibold">Upgrade to Hz AI Pro</span>
+          <span className="text-primary-extra-light">
+            Get unlimited access to all features
+          </span>
         </div>
       </div>
     </div>

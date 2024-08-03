@@ -1,8 +1,8 @@
 import express from "express";
-import ImageKit from "imagekit";
 import cors from "cors";
 import path from "path";
-import url, { fileURLToPath } from "url";
+import ImageKit from "imagekit";
+// import url, { fileURLToPath } from "url";
 import mongoose from "mongoose";
 import UserChats from "./models/userChat.js";
 import Chat from "./models/chat.js";
@@ -11,8 +11,8 @@ import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
 const port = process.env.port || 3000;
 const app = express();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 app.use(
   cors({
@@ -74,7 +74,7 @@ app.post("/api/chats", ClerkExpressRequireAuth(), async (req, res) => {
     } else {
       // If chats exists, push to existing array
       await UserChats.updateOne(
-        { userId: userId },
+        { userId: userId   },
         {
           $push: {
             chats: {

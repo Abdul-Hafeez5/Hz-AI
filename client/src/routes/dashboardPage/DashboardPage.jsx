@@ -35,28 +35,30 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="dashboardPage">
-      <div className="texts">
-        <div className="logo">
-          <img src="/logo.png" alt="logo" />
-          <h1>Hz AI</h1>
+    <div className="dashboardPage h-full flex flex-col items-center">
+      <div className="texts flex-1 flex items-center justify-center flex-col w-1/2 gap-12">
+        <div className="logo flex items-center gap-5 opacity-20">
+          <img src="/logo.png" alt="logo" className="w-16 h-16" />
+          <h1 className="text-6xl text-transparent bg-gradient-to-r  ">
+            Hz AI
+          </h1>
         </div>
-        <div className="options">
-          <div className="option">
-            <img src="/chat.png" alt="chat" />
+        <div className="options w-full flex items-center justify-between gap-12">
+          <div className="option ">
+            <img src="/chat.png" alt="chat" className="option-img" />
             <span>Create a New Chat</span>
           </div>
           <div className="option">
-            <img src="/image.png" alt="chat" />
+            <img src="/image.png" alt="chat"  className="option-img"/>
             <span>Analyze Images</span>
           </div>
           <div className="option">
-            <img src="/code.png" alt="chat" />
+            <img src="/code.png" alt="chat" className="option-img"/>
             <span>Help me with my code</span>
           </div>
         </div>
       </div>
-      <div className="formContainer">
+      <div className="formContainer mt-auto w-1/2 bg-primary-dark">
         <form onSubmit={handleSubmit}>
           <input type="text" name="text" placeholder="Ask me anything..." />
           <button>

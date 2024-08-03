@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { useMutation, QueryClient } from "@tanstack/react-query";
 import "./newPrompt.css";
 import Upload from "../upload/Upload";
 import { IKImage } from "imagekitio-react";
 import model from "../../lib/gemini";
 import Markdown from "react-markdown";
+import { useMutation, QueryClient } from "@tanstack/react-query";
 
 const NewPrompt = ({ data }) => {
   const [question, setQuestion] = useState("");
@@ -19,6 +19,7 @@ const NewPrompt = ({ data }) => {
     history: [
       data?.history.map(({ role, parts }) => ({
         role,
+        // parts: [{ text: parts[0].text || "" }],
         parts: [{ text: parts[0].text }],
       })),
     ],
@@ -30,9 +31,9 @@ const NewPrompt = ({ data }) => {
   const lastRef = useRef(null);
   const formRef = useRef(null);
 
-  useEffect(() => {
-    lastRef.current.scrollIntoView({ behaviour: "smooth" });
-  }, [data, question, answers, img.dbData]);
+  // useEffect(() => {
+  //   lastRef.current.scrollIntoView({ behaviour: "smooth" });
+  // }, [data, question, answers, img.dbData]);
 
   const queryClient = new QueryClient();
 
@@ -57,8 +58,8 @@ const NewPrompt = ({ data }) => {
         .invalidateQueries({ queryKey: ["chat", data._id] })
         .then(() => {
           formRef.current.reset();
-          setQuestion();
-          setAnswers();
+          setQuestion("");
+          setAnswers("");
           setImg({
             isLoading: false,
             error: "",
@@ -68,12 +69,13 @@ const NewPrompt = ({ data }) => {
         });
     },
     onError: (err) => {
-      console.log(err);
+      console.log("mutation error" + err);
     },
   });
 
   const runAI = async (text, isInitial) => {
     if (!isInitial) setQuestion(text);
+
     try {
       const result = await chat.sendMessageStream(
         Object.entries(img.aiData).length ? [img.aiData, text] : [text]
@@ -84,10 +86,11 @@ const NewPrompt = ({ data }) => {
         console.log(chunkText);
         accumulatedText += chunkText;
         setAnswers(accumulatedText);
+        // setAnswers((prevAnswers) => prevAnswers + chunkText);
       }
       mutation.mutate();
     } catch (error) {
-      console.log(error);
+      console.log("AI Error" + error);
     }
   };
 
@@ -95,6 +98,7 @@ const NewPrompt = ({ data }) => {
     e.preventDefault();
     const querry = e.target.querryText.value;
     if (!querry) return;
+
     runAI(querry, false);
   };
 
@@ -118,6 +122,7 @@ const NewPrompt = ({ data }) => {
           path={img.dbData?.filePath}
           width="380"
           transformation={[{ width: 380 }]}
+          key={img.dbData?.filePath}
         />
       )}
       {question && <div className="message user">{question}</div>}
@@ -126,13 +131,28 @@ const NewPrompt = ({ data }) => {
           <Markdown>{answers}</Markdown>
         </div>
       )}
-      <div className="endChat" ref={lastRef}></div>
-      <form className="newForm" onSubmit={handleSubmit} ref={formRef}>
+      <div className="endChat pb-24" ref={lastRef}></div>
+      <form
+        className="newForm w-1/2 absolute bottom-0 bg-primary-dark rounded-3xl flex items-center px-5 gap-5 "
+        onSubmit={handleSubmit}
+        ref={formRef}
+      >
         <Upload setImg={setImg} />
-        <input type="file" multiple={false} id="file" hidden />
-        <input type="text" name="querryText" placeholder="Ask anything..." />
-        <button>
-          <img src="/arrow.png" alt="" />
+        <input
+          type="file"
+          multiple={false}
+          id="file"
+          hidden
+          className="flex-1 p-5 border-none outline-none bg-transparent text-primary-light"
+        />
+        <input
+          type="text"
+          name="querryText"
+          placeholder="Ask anything..."
+          className="flex-1 p-5 border-none outline-none bg-transparent text-primary-light"
+        />
+        <button className="rounded-[50%] bg-primary-light border-none p-3 flex items-center justify-center cursor-pointer ">
+          <img src="/arrow.png" alt="" className="w-4 h-4" />
         </button>
       </form>
     </>

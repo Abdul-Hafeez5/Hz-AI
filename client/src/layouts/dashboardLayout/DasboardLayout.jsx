@@ -16,11 +16,11 @@ const DasboardLayout = () => {
   if (!isLoaded) return "Loading...";
 
   return (
-    <div className="dashboardLayout">
-      <div className="menu">
+    <div className="dashboardLayout flex gap-12 pt-5 h-full ">
+      <div className="menu flex-1  ">
         <ChatList />
       </div>
-      <div className="content">
+      <div className="content flex-4 bg-primary-extra-dark">
         <Outlet />
       </div>
     </div>

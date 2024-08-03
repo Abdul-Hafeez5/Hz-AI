@@ -9,7 +9,7 @@ const HomePage = () => {
   const isOnline = useIsOnline();
   if (!isOnline) return "It seems you are offline please try again later";
   return (
-    <div className="homePage">
+    <div className="homePage flex items-center gap-24 h-full">
       <img src="/orbital.png" alt="image" className="orbital" />
       <div className="left">
         <h1>HZ AI</h1>
