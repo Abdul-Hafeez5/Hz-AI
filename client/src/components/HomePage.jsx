@@ -1,21 +1,20 @@
 import { Link } from "react-router-dom";
-// import "./homePage.css";
 import { TypeAnimation } from "react-type-animation";
 import { useState } from "react";
-import useIsOnline from "../../hooks/useIsOnline";
+import useIsOnline from "../hooks/useIsOnline";
 
 const HomePage = () => {
   const [typingStatus, setTypingStatus] = useState("Human1");
   const isOnline = useIsOnline();
   if (!isOnline) return "It seems you are offline please try again later";
   return (
-    <div className="homePage flex flex-col lg:flex-row items-center gap-0 lg:gap-24 h-full">
+    <div className=" flex flex-col lg:flex-row items-center gap-0 lg:gap-24 h-full">
       <img
         src="/orbital.png"
         alt="image"
-        className="orbital absolute bottom-0 left-0 opacity-5 z-[-1] animate-Rotate-Orbital"
+        className=" absolute bottom-0 left-0 opacity-5 z-[-1] animate-Rotate-Orbital"
       />
-      <div className="left flex-1 flex flex-col items-center justify-center gap-4 text-center">
+      <div className=" flex-1 flex flex-col items-center justify-center gap-4 text-center">
         <h1 className="text-6xl xl:text-9xl bg-gradient-to-r from-blue-custom to-pink-custom bg-clip-text">
           HZ AI
         </h1>
@@ -32,17 +31,17 @@ const HomePage = () => {
           Get Started
         </Link>
       </div>
-      <div className="right flex-1 flex items-center justify-center h-full">
-        <div className="imgContainer flex items-center justify-center bg-blue-dark rounded-[50px] h-1/2 w-[80%] relative ">
-          <div className="bgContainer w-full h-full overflow-hidden rounded-[50px] absolute top-0 left-0">
-            <div className="bg bg-[url('/bg.png')] opacity-20 w-[200%] h-full bg-auto animate-Slide-Bg"></div>
+      <div className=" flex-1 flex items-center justify-center h-full">
+        <div className=" flex items-center justify-center bg-blue-dark rounded-[50px] h-1/2 w-[80%] relative ">
+          <div className=" w-full h-full overflow-hidden rounded-[50px] absolute top-0 left-0">
+            <div className=" bg-[url('/bg.png')] opacity-20 w-[200%] h-full bg-auto animate-Slide-Bg"></div>
           </div>
           <img
             src="/bot.png"
             alt="bot"
-            className="bot w-full h-full object-contain animate-Bot-Animate"
+            className=" w-full h-full object-contain animate-Bot-Animate"
           />
-          <div className="chat hidden absolute bottom-[-30px] right-[-50px] xl:right-0 lg:flex items-center gap-2 p-5 bg-primary-dark rounded-lg">
+          <div className=" hidden absolute bottom-[-30px] right-[-50px] xl:right-0 lg:flex items-center gap-2 p-5 bg-primary-dark rounded-lg">
             <img
               className="w-8 h-8 rounded-[50%] object-cover"
               src={
@@ -85,9 +84,9 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      <div className="terms absolute bottom-5 left-12 transform -translate-x--1/2 flex flex-col items-center gap-5">
+      <div className=" absolute bottom-5 left-12 transform -translate-x--1/2 flex flex-col items-center gap-5">
         <img src="/logo.png" alt="" className="w-4 h-4" />
-        <div className="links flex gap-2 text-[10px] text-primary-extra-light">
+        <div className=" flex gap-2 text-[10px] text-primary-extra-light">
           <Link to="/"> Terms of service</Link>
           <span>|</span>
           <Link to="/"> Privacy Policy</Link>

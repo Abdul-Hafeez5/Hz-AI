@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import "./newPrompt.css";
-import Upload from "../upload/Upload";
+import Upload from "./Upload";
 import { IKImage } from "imagekitio-react";
-import model from "../../lib/gemini";
+import model from "../utils/gemini";
 import Markdown from "react-markdown";
 import { useMutation, QueryClient } from "@tanstack/react-query";
 
@@ -18,12 +17,10 @@ const NewPrompt = ({ data }) => {
   const chat = model.startChat({
     history: data?.history.map(({ role, parts }) => ({
       role,
-      // parts: [{ text: parts[0].text || "" }],
       parts: [{ text: parts[0].text }],
     })),
 
     generationConfig: {
-      // maxOutputTokens: 100,
     },
   });
 
@@ -87,7 +84,6 @@ const NewPrompt = ({ data }) => {
         const chunkText = chunk.text();
         console.log(chunkText);
         accumulatedText += chunkText;
-        // setAnswers((prevAnswers) => prevAnswers + chunkText);
         setAnswers(accumulatedText);
       }
       // mutation.mutate();
@@ -127,9 +123,13 @@ const NewPrompt = ({ data }) => {
           key={img.dbData?.filePath}
         />
       )}
-      {question && <div className="message user">{question}</div>}
+      {question && (
+        <div className=" user p-5 bg-primary-dark rounded-3xl max-w-[80%] self-end">
+          {question}
+        </div>
+      )}
       {answers && (
-        <div className="message ">
+        <div className=" p-5 ">
           <Markdown>{answers}</Markdown>
         </div>
       )}

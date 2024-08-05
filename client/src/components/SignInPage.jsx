@@ -1,5 +1,4 @@
 import { SignIn } from "@clerk/clerk-react";
-// import "./signInPage.css";
 const SignInPage = () => {
   return (
     <div className="h-full flex items-center justify-center">

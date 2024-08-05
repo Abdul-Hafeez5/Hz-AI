@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-// import "./chatList.css";
 import { useQuery } from "@tanstack/react-query";
 
 const ChatList = () => {

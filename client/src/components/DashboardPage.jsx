@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-// import "./dashboardPage.css";
 import { useMutation, QueryClient } from "@tanstack/react-query";
 
 const DashboardPage = () => {
@@ -35,15 +34,15 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="dashboardPage h-full flex flex-col items-center">
-      <div className="texts flex-1 flex items-center justify-center flex-col w-1/2 gap-12">
-        <div className="logo flex items-center gap-5 opacity-20">
+    <div className=" h-full flex flex-col items-center">
+      <div className=" flex-1 flex items-center justify-center flex-col w-1/2 gap-12">
+        <div className=" flex items-center gap-5 opacity-20">
           <img src="/logo.png" alt="logo" className="w-16 h-16" />
           <h1 className="text-6xl bg-gradient-to-r from-blue-custom to-pink-custom bg-clip-text  ">
             Hz AI
           </h1>
         </div>
-        <div className="options w-full flex items-center justify-between gap-12">
+        <div className=" w-full flex items-center justify-between gap-12">
           <div className="option ">
             <img src="/chat.png" alt="chat" className="option-img" />
             <span>Create a New Chat</span>
@@ -58,7 +57,7 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
-      <div className="formContainer mt-auto w-1/2 bg-primary-dark">
+      <div className=" mt-auto w-1/2 bg-primary-dark">
         <form onSubmit={handleSubmit} className="w-full h-full flex items-center justify-between gap-5 mb-2">
           <input type="text" name="text" placeholder="Ask me anything..."  className=" flex-1 p-5 bg-transparent border-none outline-none text-primary-light"/>
           <button className="bg-primary-light rounded-[50%] border-none cursor-pointer p-2 flex items-center justify-center mr-5   ">
