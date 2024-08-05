@@ -17,6 +17,11 @@ a {
   text-decoration: none;
   color: inherit;
 }
+.bg-clip-text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
 .option {
   @apply flex-1 flex flex-col gap-3 font-light text-sm p-5 border border-[#555] rounded-2xl;
 }

@@ -1,7 +1,7 @@
 .homePage {
   display: flex;
   align-items: center;
-  gap: 100px;
+  /* gap: 100px; */
   height: 100%;
 
   @media screen and (max-width: 1024px) {
@@ -157,7 +157,7 @@
     }
   }
 }
-  
+
 @keyframes rotateOrbital {
   0% {
     transform: rotate(0deg);

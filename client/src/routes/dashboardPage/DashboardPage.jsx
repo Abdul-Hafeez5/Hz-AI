@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "./dashboardPage.css";
+// import "./dashboardPage.css";
 import { useMutation, QueryClient } from "@tanstack/react-query";
 
 const DashboardPage = () => {
@@ -39,7 +39,7 @@ const DashboardPage = () => {
       <div className="texts flex-1 flex items-center justify-center flex-col w-1/2 gap-12">
         <div className="logo flex items-center gap-5 opacity-20">
           <img src="/logo.png" alt="logo" className="w-16 h-16" />
-          <h1 className="text-6xl text-transparent bg-gradient-to-r  ">
+          <h1 className="text-6xl bg-gradient-to-r from-blue-custom to-pink-custom bg-clip-text  ">
             Hz AI
           </h1>
         </div>
@@ -49,20 +49,20 @@ const DashboardPage = () => {
             <span>Create a New Chat</span>
           </div>
           <div className="option">
-            <img src="/image.png" alt="chat"  className="option-img"/>
+            <img src="/image.png" alt="chat" className="option-img" />
             <span>Analyze Images</span>
           </div>
           <div className="option">
-            <img src="/code.png" alt="chat" className="option-img"/>
+            <img src="/code.png" alt="chat" className="option-img" />
             <span>Help me with my code</span>
           </div>
         </div>
       </div>
       <div className="formContainer mt-auto w-1/2 bg-primary-dark">
-        <form onSubmit={handleSubmit}>
-          <input type="text" name="text" placeholder="Ask me anything..." />
-          <button>
-            <img src="/arrow.png" alt="submit" />
+        <form onSubmit={handleSubmit} className="w-full h-full flex items-center justify-between gap-5 mb-2">
+          <input type="text" name="text" placeholder="Ask me anything..."  className=" flex-1 p-5 bg-transparent border-none outline-none text-primary-light"/>
+          <button className="bg-primary-light rounded-[50%] border-none cursor-pointer p-2 flex items-center justify-center mr-5   ">
+            <img src="/arrow.png" alt="submit" className="w-4 h-4"/>
           </button>
         </form>
       </div>

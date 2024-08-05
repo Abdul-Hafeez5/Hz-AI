@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import "./chatPage.css";
+// import "./chatPage.css";
 import { useLocation } from "react-router-dom";
 import Markdown from "react-markdown";
 import { IKImage } from "imagekitio-react";
@@ -16,7 +16,7 @@ const ChatPage = () => {
         credentials: "include",
       }).then((res) => res.json()),
   });
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className="chatPage h-full flex items-center flex-col relative">
@@ -41,11 +41,10 @@ const ChatPage = () => {
                   )}
                   <div
                     className={
-                      // message.role ===
-                      // "bg-[#2c2937] rounded-3xl max-w-[80%] self-end"
-                      //   ? " p-5 bg-[#2c2937] rounded-3xl max-w-[80%] self-end"
-                      //   : "p-5"
-                      message.role === "user" ? "message user" : "message"
+                      message.role === "user"
+                        ? "bg-primary-dark rounded-3xl max-w-[80%] self-end"
+                        : "p-5"
+                      // message.role === "user" ? "message user" : "message"
                     }
                   >
                     <Markdown>{message.parts[0].text}</Markdown>

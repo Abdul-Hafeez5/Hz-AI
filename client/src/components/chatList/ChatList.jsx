@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./chatList.css";
+// import "./chatList.css";
 import { useQuery } from "@tanstack/react-query";
 
 const ChatList = () => {
@@ -24,7 +24,7 @@ const ChatList = () => {
           ? "Loading..."
           : error
           ? "something went wrong"
-          : data?.map((chat) => (
+          : data?.reverse()?.map((chat) => (
               <Link
                 to={`/dashboard/chats/${chat._id}`}
                 key={chat._id}

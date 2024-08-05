@@ -16,13 +16,12 @@ const NewPrompt = ({ data }) => {
     aiData: {},
   });
   const chat = model.startChat({
-    history: [
-      data?.history.map(({ role, parts }) => ({
-        role,
-        // parts: [{ text: parts[0].text || "" }],
-        parts: [{ text: parts[0].text }],
-      })),
-    ],
+    history: data?.history.map(({ role, parts }) => ({
+      role,
+      // parts: [{ text: parts[0].text || "" }],
+      parts: [{ text: parts[0].text }],
+    })),
+
     generationConfig: {
       // maxOutputTokens: 100,
     },
@@ -31,47 +30,50 @@ const NewPrompt = ({ data }) => {
   const lastRef = useRef(null);
   const formRef = useRef(null);
 
-  // useEffect(() => {
-  //   lastRef.current.scrollIntoView({ behaviour: "smooth" });
-  // }, [data, question, answers, img.dbData]);
+  useEffect(() => {
+    lastRef.current.scrollIntoView({ behaviour: "smooth" });
+  }, [data, question, answers, img.dbData]);
 
   const queryClient = new QueryClient();
 
-  const mutation = useMutation({
-    mutationFn: () => {
-      return fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}`, {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          question: question.length ? question : undefined,
-          answers,
-          img: img.dbData?.filePath || undefined,
-        }),
-      }).then((res) => res.json());
-    },
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient
-        .invalidateQueries({ queryKey: ["chat", data._id] })
-        .then(() => {
-          formRef.current.reset();
-          setQuestion("");
-          setAnswers("");
-          setImg({
-            isLoading: false,
-            error: "",
-            dbData: {},
-            aiData: {},
-          });
-        });
-    },
-    onError: (err) => {
-      console.log("mutation error" + err);
-    },
-  });
+  // const mutation = useMutation({
+  //   mutationFn: async () => {
+  //     return await fetch(
+  //       `${import.meta.env.VITE_API_URL}/api/chats/${data._id}`,
+  //       {
+  //         method: "PUT",
+  //         credentials: "include",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           question: question.length ? question : undefined,
+  //           answers,
+  //           img: img.dbData?.filePath || undefined,
+  //         }),
+  //       }
+  //     ).then((res) => res.json());
+  //   },
+  //   onSuccess: () => {
+  //     // Invalidate and refetch
+  //     queryClient
+  //       .invalidateQueries({ queryKey: ["chat", data._id] })
+  //       .then(() => {
+  //         // formRef.current.reset();
+  //         setQuestion("");
+  //         setAnswers("");
+  //         setImg({
+  //           isLoading: false,
+  //           error: "",
+  //           dbData: {},
+  //           aiData: {},
+  //         });
+  //       });
+  //   },
+  //   onError: (err) => {
+  //     console.log("mutation error" + err);
+  //   },
+  // });
 
   const runAI = async (text, isInitial) => {
     if (!isInitial) setQuestion(text);
@@ -85,10 +87,10 @@ const NewPrompt = ({ data }) => {
         const chunkText = chunk.text();
         console.log(chunkText);
         accumulatedText += chunkText;
-        setAnswers(accumulatedText);
         // setAnswers((prevAnswers) => prevAnswers + chunkText);
+        setAnswers(accumulatedText);
       }
-      mutation.mutate();
+      // mutation.mutate();
     } catch (error) {
       console.log("AI Error" + error);
     }
@@ -131,9 +133,9 @@ const NewPrompt = ({ data }) => {
           <Markdown>{answers}</Markdown>
         </div>
       )}
-      <div className="endChat pb-24" ref={lastRef}></div>
+      <div className=" pb-24" ref={lastRef}></div>
       <form
-        className="newForm w-1/2 absolute bottom-0 bg-primary-dark rounded-3xl flex items-center px-5 gap-5 "
+        className=" w-1/2 absolute bottom-0 bg-primary-dark rounded-3xl flex items-center px-5 gap-5 "
         onSubmit={handleSubmit}
         ref={formRef}
       >
