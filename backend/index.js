@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import ImageKit from "imagekit";
-// import url, { fileURLToPath } from "url";
+import url, { fileURLToPath } from "url";
 import mongoose from "mongoose";
 import UserChats from "./models/userChat.js";
 import Chat from "./models/chat.js";
@@ -11,8 +11,8 @@ import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
 const port = process.env.port || 3000;
 const app = express();
 
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.use(
   cors({
@@ -42,7 +42,6 @@ app.get("/api/upload", (req, res) => {
   const result = imagekit.getAuthenticationParameters();
   res.send(result);
 });
-
 
 app.post("/api/chats", ClerkExpressRequireAuth(), async (req, res) => {
   const { text } = req.body;
@@ -74,7 +73,7 @@ app.post("/api/chats", ClerkExpressRequireAuth(), async (req, res) => {
     } else {
       // If chats exists, push to existing array
       await UserChats.updateOne(
-        { userId: userId   },
+        { userId: userId },
         {
           $push: {
             chats: {
@@ -147,11 +146,11 @@ app.use((err, req, res, next) => {
   res.status(401).send("Unauthenticated!");
 });
 
-// app.use(express.static(path.join(__dirname, "../client")));
+app.use(express.static(path.join(__dirname, "../client")));
 
-// app.get("*", (req, res) => {
-//   res.sendFile(__dirname, "../client", index.html);
-// });
+app.get("*", (req, res) => {
+  res.sendFile(__dirname, "../client", index.html);
+});
 
 app.listen(port, () => {
   connectToDb();
