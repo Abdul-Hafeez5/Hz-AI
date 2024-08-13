@@ -33,44 +33,44 @@ const NewPrompt = ({ data }) => {
 
   const queryClient = new QueryClient();
 
-  // const mutation = useMutation({
-  //   mutationFn: async () => {
-  //     return await fetch(
-  //       `${import.meta.env.VITE_API_URL}/api/chats/${data._id}`,
-  //       {
-  //         method: "PUT",
-  //         credentials: "include",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           question: question.length ? question : undefined,
-  //           answers,
-  //           img: img.dbData?.filePath || undefined,
-  //         }),
-  //       }
-  //     ).then((res) => res.json());
-  //   },
-  //   onSuccess: () => {
-  //     // Invalidate and refetch
-  //     queryClient
-  //       .invalidateQueries({ queryKey: ["chat", data._id] })
-  //       .then(() => {
-  //         // formRef.current.reset();
-  //         setQuestion("");
-  //         setAnswers("");
-  //         setImg({
-  //           isLoading: false,
-  //           error: "",
-  //           dbData: {},
-  //           aiData: {},
-  //         });
-  //       });
-  //   },
-  //   onError: (err) => {
-  //     console.log("mutation error" + err);
-  //   },
-  // });
+  const mutation = useMutation({
+    mutationFn: async () => {
+      return await fetch(
+        `${import.meta.env.VITE_API_URL}/api/chats/${data._id}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            question: question.length ? question : undefined,
+            answers,
+            img: img.dbData?.filePath || undefined,
+          }),
+        }
+      ).then((res) => res.json());
+    },
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient
+        .invalidateQueries({ queryKey: ["chat", data._id] })
+        .then(() => {
+          // formRef.current.reset();
+          setQuestion("");
+          setAnswers("");
+          setImg({
+            isLoading: false,
+            error: "",
+            dbData: {},
+            aiData: {},
+          });
+        });
+    },
+    onError: (err) => {
+      console.log("mutation error" + err);
+    },
+  });
 
   const runAI = async (text, isInitial) => {
     if (!isInitial) setQuestion(text);
