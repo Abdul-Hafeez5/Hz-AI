@@ -14,8 +14,10 @@ const ChatList = () => {
     <div className="flex  flex-col h-full ">
       <span className=" font-semibold text-[10px] mb-3">DASHBOARD</span>
       <Link to="/dashboard">Create a new Chat </Link>
-      <Link to="/">Explore Hz AI </Link>
-      <Link to="/">Contact </Link>
+      <Link to="/" className="my-2">
+        Explore Hz AI{" "}
+      </Link>
+      <Link to="/">Contact Us </Link>
       <hr className="border-none h-1 bg-primary-extra-light opacity-10 rounded-md my-5" />
       <span className=" font-semibold text-[10px] mb-3">RECENT CHATS</span>
       <div className=" flex flex-col overflow-auto">
