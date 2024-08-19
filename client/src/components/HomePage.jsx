@@ -8,7 +8,7 @@ const HomePage = () => {
   const isOnline = useIsOnline();
   if (!isOnline) return "It seems you are offline please try again later";
   return (
-    <div className=" flex flex-col lg:flex-row items-center gap-0 lg:gap-24 h-full">
+    <div className=" relative flex flex-col lg:flex-row items-center gap-0 lg:gap-24 h-full">
       <img
         src="/orbital.png"
         alt="image"
@@ -84,9 +84,9 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      <div className=" absolute bottom-5 left-12 transform -translate-x--1/2 flex flex-col items-center gap-5">
+      <div className=" absolute bottom-5 left-[40%] transform -translate-x--1/2 flex flex-col items-center jus  gap-5">
         <img src="/logo.png" alt="" className="w-4 h-4" />
-        <div className=" flex gap-2 text-[10px] text-primary-extra-light">
+        <div className=" flex gap-2  text-[10px] text-primary-extra-light">
           <Link to="/"> Terms of service</Link>
           <span>|</span>
           <Link to="/"> Privacy Policy</Link>

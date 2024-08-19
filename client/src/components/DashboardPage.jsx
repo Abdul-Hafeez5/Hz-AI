@@ -57,11 +57,19 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
-      <div className=" mt-auto w-1/2 bg-primary-dark">
-        <form onSubmit={handleSubmit} className="w-full h-full flex items-center justify-between gap-5 mb-2">
-          <input type="text" name="text" placeholder="Ask me anything..."  className=" flex-1 p-5 bg-transparent border-none outline-none text-primary-light"/>
+      <div className=" mt-auto w-1/2 bg-primary-dark rounded-xl">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full h-full flex items-center justify-between gap-5 mb-2"
+        >
+          <input
+            type="text"
+            name="text"
+            placeholder="Ask me anything..."
+            className=" flex-1 p-5 bg-transparent border-none outline-none text-primary-light"
+          />
           <button className="bg-primary-light rounded-[50%] border-none cursor-pointer p-2 flex items-center justify-center mr-5   ">
-            <img src="/arrow.png" alt="submit" className="w-4 h-4"/>
+            <img src="/arrow.png" alt="submit" className="w-4 h-4" />
           </button>
         </form>
       </div>

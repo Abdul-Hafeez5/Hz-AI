@@ -38,11 +38,11 @@ const ChatPage = () => {
                     />
                   )}
                   <div
-                    className={
-                      message.role === "user"
-                        ? "bg-primary-dark rounded-3xl max-w-[80%] self-end"
-                        : "p-5"
-                    }
+                  className={
+                    message.role === "user"
+                      ? "bg-primary-dark rounded-3xl max-w-[80%] self-end"
+                      : "p-5"
+                  }
                   >
                     <Markdown>{message.parts[0].text}</Markdown>
                   </div>

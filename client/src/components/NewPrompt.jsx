@@ -124,7 +124,7 @@ const NewPrompt = ({ data }) => {
         />
       )}
       {question && (
-        <div className=" user p-5 bg-primary-dark rounded-3xl max-w-[80%] self-end">
+        <div className="  p-5 bg-primary-dark rounded-3xl max-w-[80%] self-end">
           {question}
         </div>
       )}

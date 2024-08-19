@@ -19,7 +19,7 @@ const RootLayOut = () => {
               <img src="/logo.png" alt="logo" className="w-8 h-8" />
               <span>Hz AI</span>
             </Link>
-            <div className=" p-5 bg-primary-dark rounded-3xl max-w-[80%] self-end">
+            <div className="  rounded-full max-w-[80%] self-end">
               <SignedIn>
                 <UserButton />
               </SignedIn>
