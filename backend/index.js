@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import ImageKit from "imagekit";
-import mongoose from "mongoose";
+import { connectToDb } from "./configs/db.js";
 import UserChats from "./models/userChat.js";
 import Chat from "./models/chat.js";
 import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
@@ -17,15 +17,6 @@ app.use(
 );
 
 app.use(express.json());
-
-const connectToDb = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log("Db connected");
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 const imagekit = new ImageKit({
   urlEndpoint: process.env.IMAGE_KIT_ENDPOINT,
