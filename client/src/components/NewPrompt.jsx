@@ -3,7 +3,7 @@ import Upload from "./Upload";
 import { IKImage } from "imagekitio-react";
 import model from "../utils/gemini";
 import Markdown from "react-markdown";
-import { useMutation, QueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const NewPrompt = ({ data }) => {
   const [question, setQuestion] = useState("");
@@ -14,13 +14,40 @@ const NewPrompt = ({ data }) => {
     dbData: {},
     aiData: {},
   });
+  // const chat = model.startChat({
+  //   history: [
+  //     data?.history?.map(({ role, parts }) => {
+  //       if (role && parts?.length > 0 && parts[0].text) {
+  //         return {
+  //           role,
+  //           parts: [{ text: parts[0].text }],
+  //         };
+  //       } else {
+  //         console.error("Invalid history entry", { role, parts });
+  //         return null;
+  //       }
+  //     })
+  //   ],
+  //   generationConfig: {},
+  // });
+
   const chat = model.startChat({
-    history: data?.history.map(({ role, parts }) => ({
-      role,
-      parts: [{ text: parts[0].text }],
-    })),
+    history: data?.history
+      ?.map(({ role, parts }) => {
+        if (role && parts?.length > 0 && parts[0].text) {
+          return {
+            role,
+            parts: [{ text: parts[0].text }],
+          };
+        } else {
+          console.error("Invalid history entry", { role, parts });
+          return null;
+        }
+      })
+      .filter(Boolean), // Filter out any null or undefined entries
 
     generationConfig: {
+      // maxOutputTokens: 100,
     },
   });
 
@@ -31,32 +58,29 @@ const NewPrompt = ({ data }) => {
     lastRef.current.scrollIntoView({ behaviour: "smooth" });
   }, [data, question, answers, img.dbData]);
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async () => {
-      return await fetch(
-        `${import.meta.env.VITE_API_URL}/api/chats/${data._id}`,
-        {
-          method: "PUT",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            question: question.length ? question : undefined,
-            answers,
-            img: img.dbData?.filePath || undefined,
-          }),
-        }
-      ).then((res) => res.json());
+    mutationFn: () => {
+      return fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          question: question.length ? question : undefined,
+          answers,
+          img: img.dbData?.filePath || undefined,
+        }),
+      }).then((res) => res.json());
     },
     onSuccess: () => {
       // Invalidate and refetch
       queryClient
         .invalidateQueries({ queryKey: ["chat", data._id] })
         .then(() => {
-          // formRef.current.reset();
+          formRef.current.reset();
           setQuestion("");
           setAnswers("");
           setImg({
@@ -84,9 +108,10 @@ const NewPrompt = ({ data }) => {
         const chunkText = chunk.text();
         console.log(chunkText);
         accumulatedText += chunkText;
-        setAnswers(accumulatedText);
+        console.log(accumulatedText);
+        // setAnswers(accumulatedText);
       }
-      // mutation.mutate();
+      mutation.mutate();
     } catch (error) {
       console.log("AI Error" + error);
     }
@@ -112,7 +137,7 @@ const NewPrompt = ({ data }) => {
   }, []);
 
   return (
-    <div>
+    <>
       {img.isLoading && <div>Loading...</div>}
       {img.dbData?.filePath && (
         <IKImage
@@ -120,16 +145,16 @@ const NewPrompt = ({ data }) => {
           path={img.dbData?.filePath}
           width="380"
           transformation={[{ width: 380 }]}
-          key={img.dbData?.filePath}
+          // key={img.dbData?.filePath}
         />
       )}
       {question && (
-        <div className="  p-5 bg-primary-dark rounded-3xl max-w-[80%] self-end">
+        <div className="flex bg-primary-dark rounded-3xl max-w-[50%] ">
           {question}
         </div>
       )}
       {answers && (
-        <div className=" p-5 ">
+        <div className="p-5">
           <Markdown>{answers}</Markdown>
         </div>
       )}
@@ -157,7 +182,7 @@ const NewPrompt = ({ data }) => {
           <img src="/arrow.png" alt="" className="w-4 h-4" />
         </button>
       </form>
-    </div>
+    </>
   );
 };
 

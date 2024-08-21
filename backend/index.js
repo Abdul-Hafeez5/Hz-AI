@@ -136,6 +136,19 @@ app.put("/api/chats/:id", ClerkExpressRequireAuth(), async (req, res) => {
   }
 });
 
+app.delete("/api/chats/:id", ClerkExpressRequireAuth(), async (req, res) => {
+  const chatId = req.params.id;
+  try {
+    const deleteChat = await Chat.findByIdAndDelete(chatId);
+    if (deleteChat) {
+      return res.status(404).json({ message: "chat not found" });
+    }
+    res.status(200).json({ message: "Chat deleted Successfully" });
+  } catch (error) {
+    res.status(500).json({ message: " server error", error });
+  }
+});
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(401).send("Unauthenticated!");
