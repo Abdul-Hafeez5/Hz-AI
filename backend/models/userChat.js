@@ -5,6 +5,8 @@ const userChatsSchema = new mongoose.Schema(
   {
     userId: {
       type: String,
+      // type: mongoose.Schema.Types.ObjectId,
+      // ref: "User",
       required: true,
     },
     chats: [

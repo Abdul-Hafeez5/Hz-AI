@@ -20,7 +20,7 @@ app.use(express.json());
 // routes
 app.use("/api/chats", chatRouter);
 app.use("/api/userchats", userRouter);
-app.use("/", imageRouter);
+app.use("/api", imageRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
