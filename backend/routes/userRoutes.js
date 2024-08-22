@@ -4,6 +4,6 @@ import { userChats } from "../controllers/userController.js";
 
 const userRouter = express.Router();
 
-userRouter.get("/", ClerkExpressRequireAuth, userChats);
+userRouter.get("/", ClerkExpressRequireAuth(), userChats);
 
 export default userRouter

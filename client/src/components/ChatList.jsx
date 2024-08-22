@@ -8,7 +8,7 @@ const ChatList = () => {
 
   const queryClient = useQueryClient();
 
-  const { isPending, error, data } = useQuery({
+  const { isPending,  error, data } = useQuery({
     queryKey: ["userChats"],
     queryFn: () =>
       fetch(`${import.meta.env.VITE_API_URL}/api/userchats`, {
