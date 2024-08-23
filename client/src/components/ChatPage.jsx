@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Markdown from "react-markdown";
 import { IKImage } from "imagekitio-react";
 import NewPrompt from "./NewPrompt";
 
 const ChatPage = () => {
+  const navigate = useNavigate();
   const path = useLocation().pathname;
   const chatId = path.split("/").pop();
 
@@ -15,7 +16,19 @@ const ChatPage = () => {
         credentials: "include",
       }).then((res) => res.json()),
   });
-
+  if (error) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <p>{error.message || "Chat not found. It might have been deleted."}</p>
+        <button
+          onClick={() => navigate("/dashboard")}
+          className="mt-4 px-4 py-2 bg-primary-dark rounded-lg"
+        >
+          Go back to Dashboard
+        </button>
+      </div>
+    );
+  }
   return (
     <div className=" h-full flex items-center flex-col relative">
       <div className=" flex-1 overflow-auto w-full flex justify-center">
@@ -25,7 +38,7 @@ const ChatPage = () => {
             : error
             ? "something went wrong"
             : data?.history?.map((message) => (
-                <div key={message._id}>
+                <div key={message._id} className="flex flex-col">
                   {message.img && (
                     <IKImage
                       urlEndpoint={import.meta.env.VITE_IMAGE_KIT_ENDPOINT}
@@ -38,11 +51,11 @@ const ChatPage = () => {
                     />
                   )}
                   <div
-                  className={
-                    message.role === "user"
-                      ? "bg-primary-dark rounded-3xl max-w-[80%] self-end"
-                      : "p-5"
-                  }
+                    className={
+                      message.role === "user"
+                        ? "bg-primary-dark px-5 py-3 rounded-2xl max-w-[50%] self-end"
+                        : "py-5"
+                    }
                   >
                     <Markdown>{message.parts[0].text}</Markdown>
                   </div>

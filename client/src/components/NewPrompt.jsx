@@ -6,60 +6,34 @@ import Markdown from "react-markdown";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const NewPrompt = ({ data }) => {
-  const [question, setQuestion] = useState("");
-  const [answers, setAnswers] = useState("");
+  const [question, setQuestion] = useState(""); // Stores the user's question
+  const [answer, setAnswer] = useState(""); // Stores the AI's response
   const [img, setImg] = useState({
     isLoading: false,
     error: "",
     dbData: {},
     aiData: {},
   });
-  // const chat = model.startChat({
-  //   history: [
-  //     data?.history?.map(({ role, parts }) => {
-  //       if (role && parts?.length > 0 && parts[0].text) {
-  //         return {
-  //           role,
-  //           parts: [{ text: parts[0].text }],
-  //         };
-  //       } else {
-  //         console.error("Invalid history entry", { role, parts });
-  //         return null;
-  //       }
-  //     })
-  //   ],
-  //   generationConfig: {},
-  // });
 
+  // Initialize the chat model with existing history
   const chat = model.startChat({
-    history: data?.history
-      ?.map(({ role, parts }) => {
-        if (role && parts?.length > 0 && parts[0].text) {
-          return {
-            role,
-            parts: [{ text: parts[0].text }],
-          };
-        } else {
-          console.error("Invalid history entry", { role, parts });
-          return null;
-        }
-      })
-      .filter(Boolean), // Filter out any null or undefined entries
-
-    generationConfig: {
-      // maxOutputTokens: 100,
-    },
+    history: data?.history?.map(({ role, parts }) => ({
+      role,
+      parts: [{ text: parts[0].text }],
+    })),
+    generationConfig: {},
   });
 
-  const lastRef = useRef(null);
+  const endRef = useRef(null);
   const formRef = useRef(null);
 
   useEffect(() => {
-    lastRef.current.scrollIntoView({ behaviour: "smooth" });
-  }, [data, question, answers, img.dbData]);
+    endRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [data, question, answer, img.dbData]);
 
   const queryClient = useQueryClient();
 
+  // Handle the form submission and mutation for updating the chat in the backend
   const mutation = useMutation({
     mutationFn: () => {
       return fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}`, {
@@ -69,20 +43,19 @@ const NewPrompt = ({ data }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          question: question.length ? question : undefined,
-          answers,
-          img: img.dbData?.filePath || undefined,
+          question: question.length ? question : undefined, // Send question if it's not empty
+          answer, // Send the answer from AI
+          img: img.dbData?.filePath || undefined, // Send the image path if it exists
         }),
       }).then((res) => res.json());
     },
     onSuccess: () => {
-      // Invalidate and refetch
       queryClient
         .invalidateQueries({ queryKey: ["chat", data._id] })
         .then(() => {
-          formRef.current.reset();
-          setQuestion("");
-          setAnswers("");
+          formRef.current.reset(); // Clear the form after successful mutation
+          setQuestion(""); // Clear the question state
+          setAnswer(""); // Clear the answer state
           setImg({
             isLoading: false,
             error: "",
@@ -92,12 +65,13 @@ const NewPrompt = ({ data }) => {
         });
     },
     onError: (err) => {
-      console.log("mutation error" + err);
+      console.log(err);
     },
   });
 
-  const runAI = async (text, isInitial) => {
-    if (!isInitial) setQuestion(text);
+  // Function to send a new message to the AI and handle the response
+  const add = async (text, isInitial) => {
+    if (!isInitial) setQuestion(text); // Set the question only if it's not an initial load
 
     try {
       const result = await chat.sendMessageStream(
@@ -106,59 +80,57 @@ const NewPrompt = ({ data }) => {
       let accumulatedText = "";
       for await (const chunk of result.stream) {
         const chunkText = chunk.text();
-        console.log(chunkText);
         accumulatedText += chunkText;
-        console.log(accumulatedText);
-        // setAnswers(accumulatedText);
+        setAnswer(accumulatedText); // Set the accumulated text as the answer
       }
-      mutation.mutate();
-    } catch (error) {
-      console.log("AI Error" + error);
+
+      mutation.mutate(); // Save the chat in the backend
+    } catch (err) {
+      console.log(err);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const querry = e.target.querryText.value;
-    if (!querry) return;
 
-    runAI(querry, false);
+    const text = e.target.text.value;
+    if (!text) return;
+
+    add(text, false); // Send the message to the AI
   };
 
-  // in production we don't need it
-  const doesRun = useRef(false);
+  // IN PRODUCTION WE DON'T NEED IT
+  const hasRun = useRef(false);
+
   useEffect(() => {
-    if (!doesRun.current) {
+    if (!hasRun.current) {
       if (data?.history?.length === 1) {
-        runAI(data.history[0].parts[0].text, true);
+        add(data.history[0].parts[0].text, true); // Handle the initial chat load
       }
     }
-    doesRun.current = true;
+    hasRun.current = true;
   }, []);
 
   return (
     <>
-      {img.isLoading && <div>Loading...</div>}
+      {/* ADD NEW CHAT */}
+      {img.isLoading && <div className="">Loading...</div>}
       {img.dbData?.filePath && (
         <IKImage
           urlEndpoint={import.meta.env.VITE_IMAGE_KIT_ENDPOINT}
           path={img.dbData?.filePath}
           width="380"
           transformation={[{ width: 380 }]}
-          // key={img.dbData?.filePath}
         />
       )}
-      {question && (
-        <div className="flex bg-primary-dark rounded-3xl max-w-[50%] ">
-          {question}
+      {question && <div className="message user">{question}</div>}{" "}
+      {/* Display the question */}
+      {answer && (
+        <div className="message">
+          <Markdown>{answer}</Markdown> {/* Display the AI's response */}
         </div>
       )}
-      {answers && (
-        <div className="p-5">
-          <Markdown>{answers}</Markdown>
-        </div>
-      )}
-      <div className=" pb-24" ref={lastRef}></div>
+      <div className="pb-24" ref={endRef}></div>
       <form
         className=" w-1/2 absolute bottom-0 bg-primary-dark rounded-3xl flex items-center px-5 gap-5 "
         onSubmit={handleSubmit}
@@ -166,15 +138,15 @@ const NewPrompt = ({ data }) => {
       >
         <Upload setImg={setImg} />
         <input
+          id="file"
           type="file"
           multiple={false}
-          id="file"
           hidden
           className="flex-1 p-5 border-none outline-none bg-transparent text-primary-light"
         />
         <input
           type="text"
-          name="querryText"
+          name="text"
           placeholder="Ask anything..."
           className="flex-1 p-5 border-none outline-none bg-transparent text-primary-light"
         />

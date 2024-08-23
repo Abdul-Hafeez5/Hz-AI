@@ -5,8 +5,12 @@ import crypto from "crypto";
 export const userChats = async (req, res) => {
   const userId = req.auth.userId;
   try {
-    const userChat = await UserChats.find({ userId });
-    res.status(201).send(userChat[0].chats);
+    const userChat = await UserChats.findOne({ userId });
+    if (!userChat || !userChat.chats || userChat.chats.length === 0) {
+      return res.status(200).send([]);
+    }
+
+    res.status(201).send(userChat.chats);
   } catch (error) {
     console.log(error);
     res.status(500).send("Error fetching user chats");
@@ -55,6 +59,6 @@ export const resetPassword = async (req, res) => {
     await user.save();
     res.send("Password updated successfully");
   } catch (error) {
-    res.status(500).send("Error resetting password")
+    res.status(500).send("Error resetting password");
   }
 };
