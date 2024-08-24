@@ -1,26 +1,30 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-// import chat from "../../../backend/models/chat";
 
 const ChatList = () => {
   // const [toggleMenu, setToggleMenu] = useState(false);
   const [activeChatId, setActiveChatId] = useState(null);
 
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const { isPending, error, data } = useQuery({
-    queryKey: ["userChats"],
+    queryKey: ["chat"],
     queryFn: () =>
       fetch(`${import.meta.env.VITE_API_URL}/api/userchats`, {
         credentials: "include",
       }).then((res) => res.json()),
+    onSuccess: (data) => {
+      console.log("Fetched data", data);
+    },
   });
 
   const handleDelete = async (chatId) => {
-    queryClient.setQueryData(["userChats"], (oldData) =>
-      oldData ? oldData.filter((chat) => chat._id !== chatId) : []
-    );
+    console.log("Deleting chat with ID", chatId);
+    const isCurertChat = location.pathname.includes(chatId);
+
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/chats/${chatId}`,
@@ -31,18 +35,22 @@ const ChatList = () => {
         }
       );
       if (response.ok) {
-        queryClient.invalidateQueries(["userChats"]);
+        console.log("Chat deleted Successfully", chatId);
+        console.log("Before invalidate:", queryClient.getQueryData(["chat"]));
+        queryClient.invalidateQueries(["chat"]);
+        console.log("After invalidate:", queryClient.getQueryData(["chat"]));
+        if (isCurertChat) {
+          navigate("/dashboard");
+        }
       } else {
         const errorData = await response.json();
         console.log(
           "Failed to delete chat",
           errorData.message || response.statusText
         );
-        queryClient.invalidateQueries(["userChats"]);
       }
     } catch (error) {
-      console.error("Error Message", error);
-      queryClient.invalidateQueries(["userChats"]);
+      console.error("Error While deleting chat", error);
     } finally {
       setActiveChatId(null);
     }
@@ -64,41 +72,51 @@ const ChatList = () => {
       <div className="flex flex-col  overflow-auto">
         {isPending && "Loading..."} {error && "something went wrong"}
         {data?.length === 0 && "no chat available"}
-        {data?.reverse()?.map((chat) => (
-          <div key={chat._id} className=" relative">
-            <Link
-              to={`/dashboard/chats/${chat._id}`}
-              // key={chat._id}
-              className="p-3 rounded-xl flex justify-between items-center hover:bg-primary-dark"
-            >
-              <span>{chat.title} </span>
-              <button
-                onClick={() => handleToggleMenu(chat._id)}
-                className="ml-auto"
+        {console.log("Rendering chatList with data: ", data)}
+        {data
+          ?.sort((a, b) => {
+            const dateComparison =
+              new Date(b.createdAt) - new Date(a.createdAt);
+            if (dateComparison !== 0) {
+              return dateComparison;
+            }
+            return b._id.localeCompare(a._id);
+          })
+          ?.map((chat) => (
+            <div key={chat._id} className=" relative">
+              <Link
+                to={`/dashboard/chats/${chat._id}`}
+                // key={chat._id}
+                className="p-3 rounded-xl flex justify-between items-center hover:bg-primary-dark"
               >
-                &#8230;
-              </button>
-            </Link>
-            {activeChatId === chat._id && (
-              <div className="absolute right-10 top-0 mt-2 w-48 bg-[#1e1b29] rounded-md shadow-lg z-10">
-                <ul className="py-1">
-                  <li className="px-4 py-2 hover:bg-[#3b3754] cursor-pointer">
-                    Rename
-                  </li>
-                  <li className="px-4 py-2 hover:bg-[#3b3754] cursor-pointer">
-                    Share
-                  </li>
-                  <li
-                    className="px-4 py-2 hover:bg-[#3b3754] cursor-pointer"
-                    onClick={() => handleDelete(chat._id)}
-                  >
-                    Delete
-                  </li>
-                </ul>
-              </div>
-            )}
-          </div>
-        ))}
+                <span>{chat.title} </span>
+                <button
+                  onClick={() => handleToggleMenu(chat._id)}
+                  className="ml-auto"
+                >
+                  &#8230;
+                </button>
+              </Link>
+              {activeChatId === chat._id && (
+                <div className="absolute right-10 top-0 mt-2 w-48 bg-[#1e1b29] rounded-md shadow-lg z-10">
+                  <ul className="py-1">
+                    <li className="px-4 py-2 hover:bg-[#3b3754] cursor-pointer">
+                      Rename
+                    </li>
+                    <li className="px-4 py-2 hover:bg-[#3b3754] cursor-pointer">
+                      Share
+                    </li>
+                    <li
+                      className="px-4 py-2 hover:bg-[#3b3754] cursor-pointer"
+                      onClick={() => handleDelete(chat._id)}
+                    >
+                      Delete
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          ))}
       </div>
       <hr className="border-none h-1 bg-primary-extra-light opacity-10 rounded-md my-5" />
       <div className=" mt-auto flex items-center gap-3 text-[12px]">

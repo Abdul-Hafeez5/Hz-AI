@@ -9,6 +9,7 @@ export const createChat = async (req, res) => {
     // create a new chat
     const newChat = new Chat({
       userId: userId,
+      createdAt: new Date(),
       history: [{ role: "user", parts: [{ text }] }],
     });
 
@@ -91,13 +92,12 @@ export const updateChat = async (req, res) => {
 export const deleteChat = async (req, res) => {
   const chatId = req.params.id;
   try {
-    const deleteChat = await Chat.findById(chatId);
+    const deleteChat = await Chat.findByIdAndDelete(chatId);
     if (!deleteChat) {
       return res.status(404).json({ message: "chat not found" });
     }
-    await deleteChat.findByIdAndDelete(chatId)
     res.status(200).json({ message: "Chat deleted Successfully" });
   } catch (error) {
     res.status(500).json({ message: " server error", error });
   }
-};  
+};
