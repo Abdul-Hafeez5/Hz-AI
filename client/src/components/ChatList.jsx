@@ -37,7 +37,7 @@ const ChatList = () => {
       if (response.ok) {
         console.log("Chat deleted Successfully", chatId);
         console.log("Before invalidate:", queryClient.getQueryData(["chat"]));
-        queryClient.invalidateQueries(["chat"]);
+       await queryClient.invalidateQueries(["chat"]);
         console.log("After invalidate:", queryClient.getQueryData(["chat"]));
         if (isCurertChat) {
           navigate("/dashboard");
