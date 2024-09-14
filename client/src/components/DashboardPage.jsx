@@ -42,7 +42,7 @@ const DashboardPage = () => {
             Hz AI
           </h1>
         </div>
-        <div className=" w-full flex items-center justify-between gap-12">
+        <div className=" w-full block  md:flex flex-wrap items-center justify-between md:gap-x-4  ">
           <div className="option ">
             <img src="/chat.png" alt="chat" className="option-img" />
             <span>Create a New Chat</span>
@@ -66,10 +66,10 @@ const DashboardPage = () => {
             type="text"
             name="text"
             placeholder="Ask me anything..."
-            className=" flex-1 p-5 bg-transparent border-none outline-none text-primary-light"
+            className=" flex-1 lg:p-5 p-3 bg-transparent border-none outline-none text-primary-light"
           />
-          <button className="bg-primary-light rounded-[50%] border-none cursor-pointer p-2 flex items-center justify-center mr-5   ">
-            <img src="/arrow.png" alt="submit" className="w-4 h-4" />
+          <button className="bg-primary-light lg:rounded-[50%] rounded-xl border-none cursor-pointer p-1 mr-2 flex items-center justify-center lg:mr-5   ">
+            <img src="/arrow.png" alt="submit" className="lg:w-4 lg:h-4 w-3 h-3" />
           </button>
         </form>
       </div>

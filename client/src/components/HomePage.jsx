@@ -32,14 +32,14 @@ const HomePage = () => {
         </Link>
       </div>
       <div className=" flex-1 flex items-center justify-center h-full">
-        <div className=" flex items-center justify-center bg-blue-dark rounded-[50px] h-1/2 w-[80%] relative ">
+        <div className=" flex items-center justify-center bg-blue-dark rounded-3xl h-1/2 w-[80%] relative ">
           <div className=" w-full h-full overflow-hidden rounded-[50px] absolute top-0 left-0">
             <div className=" bg-[url('/bg.png')] opacity-20 w-[200%] h-full bg-auto animate-Slide-Bg"></div>
           </div>
           <img
             src="/bot.png"
             alt="bot"
-            className=" w-full h-full object-contain animate-Bot-Animate"
+            className=" w-full h-full p-3 sm:p-0 lg:w-full lg:h-full object-contain animate-Bot-Animate"
           />
           <div className=" hidden absolute bottom-[-30px] right-[-50px] xl:right-0 lg:flex items-center gap-2 p-5 bg-primary-dark rounded-lg">
             <img
@@ -84,14 +84,14 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      <div className=" absolute bottom-5 left-[40%] transform -translate-x--1/2 flex flex-col items-center jus  gap-5">
+      {/* <div className=" absolute bottom-5 left-[40%] transform -translate-x--1/2 flex flex-col items-center jus  gap-5">
         <img src="/logo.png" alt="" className="w-4 h-4" />
         <div className=" flex gap-2  text-[10px] text-primary-extra-light">
           <Link to="/"> Terms of service</Link>
           <span>|</span>
           <Link to="/"> Privacy Policy</Link>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
