@@ -123,7 +123,7 @@ const NewPrompt = ({ data }) => {
           transformation={[{ width: 380 }]}
         />
       )}
-      {question && <div className="message user">{question}</div>}{" "}
+      {question && <div className="message user">{question}</div>}
       {/* Display the question */}
       {answer && (
         <div className="message">

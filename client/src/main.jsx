@@ -12,16 +12,18 @@ import SignUpPage from "./components/SignUpPage.jsx";
 
 const appRouter = createBrowserRouter([
   {
+    path: "/",
     element: <RootLayOut />,
     children: [
-      { path: "/", element: <HomePage /> },
-      { path: "/sign-in/*", element: <SignInPage /> },
-      { path: "/sign-up/*", element: <SignUpPage /> },
+      { path: "", element: <HomePage /> },
+      { path: "sign-in/*", element: <SignInPage /> },
+      { path: "sign-up/*", element: <SignUpPage /> },
       {
+        path: "dashboard",
         element: <DashboardLayout />, 
         children: [
-          { path: "/dashboard", element: <DashboardPage /> },
-          { path: "/dashboard/chats/:id", element: <ChatPage /> },
+          { path: "", element: <DashboardPage /> },
+          { path: "chats/:id", element: <ChatPage /> },
         ],
       },
     ],
