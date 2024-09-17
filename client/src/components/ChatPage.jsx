@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Markdown from "react-markdown";
 import { IKImage } from "imagekitio-react";
 import NewPrompt from "./NewPrompt";
+import { SERVER_URL, IMAGE_KIT_ENDPOINT } from "../utils/constants";
 
 const ChatPage = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const ChatPage = () => {
   const { isPending, error, data } = useQuery({
     queryKey: ["chat", chatId],
     queryFn: () =>
-      fetch(`${import.meta.env.VITE_API_URL}/api/chats/${chatId}`, {
+      fetch(`${SERVER_URL}/api/chats/${chatId}`, {
         credentials: "include",
       }).then((res) => res.json()),
   });
@@ -32,7 +33,7 @@ const ChatPage = () => {
   return (
     <div className=" h-full flex items-center flex-col relative">
       <div className=" flex-1 overflow-auto w-full flex justify-center">
-        <div className=" w-1/2 flex flex-col gap-5">
+        <div className="mx-4 lg:mx-0 md:w-1/2 flex flex-col gap-5">
           {isPending
             ? "Loading..."
             : error
@@ -41,7 +42,7 @@ const ChatPage = () => {
                 <div key={message._id} className="flex flex-col">
                   {message.img && (
                     <IKImage
-                      urlEndpoint={import.meta.env.VITE_IMAGE_KIT_ENDPOINT}
+                      urlEndpoint={IMAGE_KIT_ENDPOINT}
                       path={message.img}
                       height="300"
                       width="400"
@@ -53,8 +54,8 @@ const ChatPage = () => {
                   <div
                     className={
                       message.role === "user"
-                        ? "bg-primary-dark px-5 py-3 rounded-2xl max-w-[50%] self-end"
-                        : "py-5"
+                        ? "bg-primary-dark p-2 md:px-5 lg:py-3  rounded-2xl max-w-[80%] md:max-w-[60%] self-end"
+                        : "py-5 "
                     }
                   >
                     <Markdown>{message.parts[0].text}</Markdown>

@@ -4,9 +4,9 @@ import { useState } from "react";
 import { IoIosMenu } from "react-icons/io";
 import { SERVER_URL } from "../utils/constants";
 
-const ChatList = () => {
+const SidebarList = () => {
   const [activeChatId, setActiveChatId] = useState(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -24,7 +24,6 @@ const ChatList = () => {
   });
 
   const handleDelete = async (chatId) => {
-    // console.log("Deleting chat with ID", chatId);
     const isCurertChat = location.pathname.includes(chatId);
 
     try {
@@ -34,10 +33,9 @@ const ChatList = () => {
         headers: { "Content-Type": "application/json" },
       });
       if (response.ok) {
-        // console.log("Chat deleted Successfully", chatId);
         await queryClient.invalidateQueries(["chat"]);
         // const updateChats = await queryClient.fetchQuery(["chat "]);
-        await queryClient.fetchQuery(["chat "]);
+        await queryClient.fetchQuery(["chat"]);
         if (isCurertChat) {
           navigate("/dashboard");
         }
@@ -62,13 +60,13 @@ const ChatList = () => {
     <>
       <IoIosMenu
         className="md:hidden w-6 h-6"
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        // onClick={() => setIsMenuOpen(!isMenuOpen)}
       />
       {/* {console.log("menu open and close")} */}
       {isMenuOpen && (
         <div className="hidden md:flex  flex-col h-full  ">
           <span className=" font-semibold text-[10px] mb-3">DASHBOARD</span>
-          <Link to="dashboard">Create a new Chat </Link>
+          <Link to="/dashboard">Create a new Chat </Link>
           <Link to="/" className="my-2">
             Explore Hz AI
           </Link>
@@ -96,12 +94,12 @@ const ChatList = () => {
                     className="p-2 rounded-xl flex justify-between items-center hover:bg-primary-dark"
                   >
                     <span>{chat.title} </span>
-                    <button
+                    {/* <button
                       onClick={() => handleToggleMenu(chat._id)}
                       className="ml-auto"
                     >
                       &#8230;
-                    </button>
+                    </button> */}
                   </Link>
                   {/* {activeChatId === chat._id && (
                     <div className="absolute right-10 top-0 mt-2 w-48 bg-[#1e1b29] rounded-md shadow-lg z-10">
@@ -141,4 +139,4 @@ const ChatList = () => {
   );
 };
 
-export default ChatList;
+export default SidebarList;

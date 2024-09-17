@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useMutation, QueryClient } from "@tanstack/react-query";
+import {SERVER_URL} from "../utils/constants"
 
 const DashboardPage = () => {
   const queryClient = new QueryClient();
@@ -8,7 +9,7 @@ const DashboardPage = () => {
 
   const mutation = useMutation({
     mutationFn: (text) => {
-      return fetch(`${import.meta.env.VITE_API_URL}/api/chats`, {
+      return fetch(`${SERVER_URL}/api/chats`, {
         method: "POST",
         credentials: "include",
         headers: {

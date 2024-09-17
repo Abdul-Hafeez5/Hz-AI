@@ -3,6 +3,7 @@ import {
   HarmBlockThreshold,
   HarmCategory,
 } from "@google/generative-ai";
+import { GEMNI_PUBLIC_KEY } from "./constants";
 
 const safetySetting = [
   {
@@ -15,7 +16,7 @@ const safetySetting = [
   },
 ];
 
-const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMNI_PUBLIC_KEY);
+const genAI = new GoogleGenerativeAI(GEMNI_PUBLIC_KEY);
 
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",

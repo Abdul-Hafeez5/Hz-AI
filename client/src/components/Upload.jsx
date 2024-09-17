@@ -1,12 +1,14 @@
 import { useRef } from "react";
 import { IKContext, IKUpload } from "imagekitio-react";
-
-const urlEndpoint = import.meta.env.VITE_IMAGE_KIT_ENDPOINT;
-const publicKey = import.meta.env.VITE_IMAGE_KIT_PUBLIC_KEY;
+import {
+  IMAGE_KIT_ENDPOINT,
+  SERVER_URL,
+  IMAGE_KIT_PUBLIC_KEY,
+} from "../utils/constants";
 
 const authenticator = async () => {
   try {
-    const response = await fetch("http://localhost:3000/api/upload");
+    const response = await fetch(`${SERVER_URL}/api/upload`);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -25,7 +27,7 @@ const authenticator = async () => {
 
 const Upload = ({ setImg }) => {
   const ikUploadRef = useRef(null);
-  
+
   const onError = (err) => {
     console.log("Error", err);
   };
@@ -60,8 +62,8 @@ const Upload = ({ setImg }) => {
   return (
     <div>
       <IKContext
-        urlEndpoint={urlEndpoint}
-        publicKey={publicKey}
+        urlEndpoint={IMAGE_KIT_ENDPOINT}
+        publicKey={IMAGE_KIT_PUBLIC_KEY}
         authenticator={authenticator}
       >
         <IKUpload
@@ -76,7 +78,7 @@ const Upload = ({ setImg }) => {
         />
         {
           <label onClick={() => ikUploadRef.current.click()}>
-            <img src="/attachment.png" alt=""  className="w-5 h-5"/>
+            <img src="/attachment.png" alt="" className="w-5 h-5" />
           </label>
         }
       </IKContext>

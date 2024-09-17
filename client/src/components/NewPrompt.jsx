@@ -4,6 +4,7 @@ import { IKImage } from "imagekitio-react";
 import model from "../utils/gemini";
 import Markdown from "react-markdown";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {SERVER_URL,IMAGE_KIT_ENDPOINT} from "../utils/constants"
 
 const NewPrompt = ({ data }) => {
   const [question, setQuestion] = useState(""); // Stores the user's question
@@ -36,7 +37,7 @@ const NewPrompt = ({ data }) => {
   // Handle the form submission and mutation for updating the chat in the backend
   const mutation = useMutation({
     mutationFn: () => {
-      return fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}`, {
+      return fetch(`${SERVER_URL}/api/chats/${data._id}`, {
         method: "PUT",
         credentials: "include",
         headers: {
@@ -117,7 +118,7 @@ const NewPrompt = ({ data }) => {
       {img.isLoading && <div className="">Loading...</div>}
       {img.dbData?.filePath && (
         <IKImage
-          urlEndpoint={import.meta.env.VITE_IMAGE_KIT_ENDPOINT}
+          urlEndpoint={IMAGE_KIT_ENDPOINT}
           path={img.dbData?.filePath}
           width="380"
           transformation={[{ width: 380 }]}
@@ -132,7 +133,7 @@ const NewPrompt = ({ data }) => {
       )}
       <div className="pb-24" ref={endRef}></div>
       <form
-        className=" w-1/2 absolute bottom-0 bg-primary-dark rounded-3xl flex items-center px-5 gap-5 "
+        className=" md:w-[60%] lg:w-1/2 w-[95%] absolute bottom-0 bg-primary-dark rounded-3xl flex items-center p-2 gap-2 sm:gap-4 sm:px-4 md:px-5 md:gap-5 "
         onSubmit={handleSubmit}
         ref={formRef}
       >
@@ -142,15 +143,15 @@ const NewPrompt = ({ data }) => {
           type="file"
           multiple={false}
           hidden
-          className="flex-1 p-5 border-none outline-none bg-transparent text-primary-light"
+          className="flex-1 md:p-1 border-none outline-none bg-transparent text-primary-light"
         />
         <input
           type="text"
           name="text"
           placeholder="Ask anything..."
-          className="flex-1 p-5 border-none outline-none bg-transparent text-primary-light"
+          className="flex-1 md:p-2 border-none outline-none bg-transparent text-primary-light"
         />
-        <button className="rounded-[50%] bg-primary-light border-none p-3 flex items-center justify-center cursor-pointer ">
+        <button className="rounded-[50%] bg-primary-light border-none p-2 flex items-center justify-center cursor-pointer ">
           <img src="/arrow.png" alt="" className="w-4 h-4" />
         </button>
       </form>

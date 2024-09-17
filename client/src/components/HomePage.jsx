@@ -17,7 +17,7 @@ const HomePage = () => {
       <div className="flex flex-col lg:flex-row items-center lg:gap-x-24 h-full">
         <div className=" flex-1 flex flex-col items-center justify-center gap-4 text-center">
           <h1 className="text-6xl xl:text-9xl bg-gradient-to-r from-blue-custom to-pink-custom bg-clip-text">
-            HZ AI
+            Hz AI
           </h1>
           <h2>Your Productivity and Creativity Assistant </h2>
           <h3 className="font-normal max-w-full lg:max-w-[70%]">
